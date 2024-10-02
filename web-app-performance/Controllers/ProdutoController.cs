@@ -34,11 +34,11 @@ namespace web_app_performance.Controllers
             using var connection = new MySqlConnection(connectionString);
             await connection.OpenAsync();
             string query = "SELECT id, nome, preco, quantidade_estoque, data_criacao FROM produtos;";
-            var usuarios = await connection.QueryAsync<Usuario>(query);
-            string usuariosJson = JsonConvert.SerializeObject(usuarios);
-            await db.StringSetAsync(key, usuariosJson);
+            var produtos = await connection.QueryAsync<Produto>(query);
+            string produtosJson = JsonConvert.SerializeObject(produtos);
+            await db.StringSetAsync(key, produtosJson);
 
-            return Ok(usuarios);
+            return Ok(produtos);
         }
 
         [HttpPost]
@@ -68,7 +68,7 @@ namespace web_app_performance.Controllers
             using var connection = new MySqlConnection(connectionString);
             await connection.OpenAsync();
 
-            string sql = "UPDATE produto SET nome = @nome, preco = @preco, quantidade_estoque = @quantidade_estoque, data_criacao = @data_criacao WHERE id = @id";
+            string sql = "UPDATE produtos SET nome = @nome, preco = @preco, quantidade_estoque = @quantidade_estoque, data_criacao = @data_criacao WHERE id = @id";
             await connection.ExecuteAsync(sql, produto);
 
             //apaga o cache
@@ -92,7 +92,7 @@ namespace web_app_performance.Controllers
             await connection.ExecuteAsync(sql, new { id });
 
             //apaga o cache
-            string key = "getusuario";
+            string key = "getproduto";
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase db = redis.GetDatabase();
             await db.KeyDeleteAsync(key);
