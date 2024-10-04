@@ -1,4 +1,4 @@
-﻿namespace web_app_performance.Model
+﻿namespace web_app_domain
 {
     public class Usuario
     {

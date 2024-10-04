@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>web_app_repository</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.35" />
+		<PackageReference Include="MySqlConnector" Version="2.3.7" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\web-app-domain\web-app-domain.csproj" />
+	</ItemGroup>
+
+</Project>
