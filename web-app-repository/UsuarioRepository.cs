@@ -1,6 +1,7 @@
-﻿using MySqlConnector;
-using Dapper;
+﻿using Dapper;
+using MySqlConnector;
 using web_app_domain;
+using web_app_repository.Interfaces;
 
 namespace web_app_repository
 {
@@ -46,6 +47,5 @@ namespace web_app_repository
             await mySqlConnection.ExecuteAsync(sql, new { id });
             await mySqlConnection.CloseAsync();
         }
-
     }
 }

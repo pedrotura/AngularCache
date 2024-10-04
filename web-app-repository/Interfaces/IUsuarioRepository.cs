@@ -1,6 +1,6 @@
 ﻿using web_app_domain;
 
-namespace web_app_repository
+namespace web_app_repository.Interfaces
 {
     public interface IUsuarioRepository
     {

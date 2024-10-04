@@ -1,4 +1,5 @@
 using web_app_repository;
+using web_app_repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Configuar injeção de dependênica. Não se esquece disso
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

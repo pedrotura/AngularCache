@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using web_app_domain;
-using web_app_repository;
+using web_app_repository.Interfaces;
 
 namespace web_app_performance.Controllers
 {
@@ -21,7 +21,6 @@ namespace web_app_performance.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsuario()
         {
-
             string key = "getusuario";
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase db = redis.GetDatabase();
