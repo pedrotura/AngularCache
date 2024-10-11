@@ -21,7 +21,7 @@ namespace web_app_performance.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsuario()
         {
-            string key = "getusuario";
+            /*string key = "getusuario";
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase db = redis.GetDatabase();
             await db.KeyExpireAsync(key, TimeSpan.FromSeconds(10));
@@ -30,11 +30,17 @@ namespace web_app_performance.Controllers
             if (!string.IsNullOrEmpty(user))
             {
                 return Ok(user);
-            }
+            }*/
 
             var usuarios = await _repository.ListarUsuarios();
+
+            if (usuarios == null)
+            {
+                return NotFound();
+            }
+
             string usuariosJson = JsonConvert.SerializeObject(usuarios);
-            await db.StringSetAsync(key, usuariosJson);
+           // await db.StringSetAsync(key, usuariosJson);
 
             return Ok(usuarios);
         }
@@ -45,12 +51,12 @@ namespace web_app_performance.Controllers
             await _repository.SalvarUsuario(usuario);
 
             //apaga o cache
-            string key = "getusuario";
+            /*string key = "getusuario";
             redis = ConnectionMultiplexer.Connect("localhost:6379");
             IDatabase db = redis.GetDatabase();
-            await db.KeyDeleteAsync(key);
+            await db.KeyDeleteAsync(key);*/
 
-            return Ok();
+            return Ok(new {mensagem = "Criado com sucesso!"});
 
         }
 
