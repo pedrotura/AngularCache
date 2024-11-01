@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
 using StackExchange.Redis;
+using System.Text;
 using web_app_domain;
 using web_app_repository.Interfaces;
 
@@ -49,7 +51,7 @@ namespace web_app_performance.Controllers
         [HttpPost]
         public async Task<IActionResult> PostProduto([FromBody] Produto produto)
         {
-            await _repository.SalvarProduto(produto);
+            //await _repository.SalvarProduto(produto);
 
             //apaga o cache
             /*string key = "getproduto";
@@ -57,7 +59,34 @@ namespace web_app_performance.Controllers
             IDatabase db = redis.GetDatabase();
             await db.KeyDeleteAsync(key);*/
 
-            return Ok(new { mensagem = "Criado com sucesso!" });
+            var factory = new ConnectionFactory()
+            {
+                HostName = "localhost"
+            };
+
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+
+            const string fila = "fila_teste";
+
+            channel.QueueDeclare(queue: fila,
+                                 durable: false,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
+
+            string mensagem = JsonConvert.SerializeObject(produto);
+            var body = Encoding.UTF8.GetBytes(mensagem);
+
+            channel.BasicPublish(exchange: "",
+                                 routingKey: fila,
+                                 basicProperties: null,
+                                 body: body);
+
+            Console.WriteLine("Estoque atualizado com Sucesso");
+            Console.ReadLine();
+
+            return Ok(mensagem);
 
         }
 
